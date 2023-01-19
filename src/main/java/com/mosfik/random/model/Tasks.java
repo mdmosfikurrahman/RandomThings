@@ -17,21 +17,31 @@ public class Tasks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer taskId;
+
     @Column(name = "TITLE")
     private String taskTitle;
+
     @Column(name = "DETAILS")
     private String taskDetails;
+
     @Column(name = "PRIORITY")
-    private String priority;
+    private String taskPriority;
+
+    @Column(name = "STATUS")
+    private String taskStatus;
+
+    @Column(name = "ACTIVE_STATUS")
+    private Boolean taskIsActive;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATED_AT")
-    private Date createdAt;
-    @Temporal(TemporalType.DATE)
-    @Column(name = "COMPLETED_AT")
-    private Date completedAt;
+    private Date taskCreatedAt;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "MODIFIED_AT")
-    private Date modifiedAt;
-    @Column(name = "ACTIVE_STATUS")
-    private Boolean isActive;
+    private Date taskModifiedAt;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "COMPLETED_AT")
+    private Date taskCompletedAt;
 }

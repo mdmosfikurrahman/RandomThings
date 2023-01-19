@@ -15,7 +15,7 @@ public class TasksDto implements Serializable {
     private Integer taskId;
     private String taskTitle;
     private String taskDetails;
-    private String priority;
-    private Boolean isActive;
-
+    private String taskPriority;
+    private String taskStatus;
+    private Boolean taskIsActive;
 }

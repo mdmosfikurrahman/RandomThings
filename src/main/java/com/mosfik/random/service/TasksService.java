@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,32 +23,12 @@ import java.util.Map;
 @Service
 public class TasksService {
     private static final String DATE_TIME_FORMAT = "dd/MM/yyyy";
-
     private final TasksRepository tasksRepository;
-
+    private final Utils utils;
     private static final Log log = LogFactory.getLog(TasksService.class);
-
-    public TasksService(TasksRepository tasksRepository) {
+    public TasksService(TasksRepository tasksRepository, Utils utils) {
         this.tasksRepository = tasksRepository;
-    }
-
-    /**
-     * Get Tasks list
-     *
-     * @return String
-     */
-
-    public String getTaskList() {
-        List<Tasks> tasksList = tasksRepository.findAll();
-
-        StringBuilder stringBuilder = new StringBuilder("<option value=\"\">---</option>");
-        if(tasksList != null && tasksList.size() > 0) {
-            for (Tasks tasks : tasksList) {
-                String option = "<option value=\"" + tasks.getTaskId() + "\">" + tasks.getTaskTitle() + "</option>";
-                stringBuilder.append(option);
-            }
-        }
-        return stringBuilder.toString();
+        this.utils = utils;
     }
 
     /**
@@ -55,21 +36,22 @@ public class TasksService {
      *
      * @param model Model
      */
-
-    public void viewInit(Model model) {
+    public void viewInit(Model model){
         List<TasksDto> tasksDtoList = new ArrayList<>();
         List<Tasks> tasksList = tasksRepository.findAllByOrderByTaskIdDesc();
         TasksDto tasksDto = null;
+        if (tasksList != null && tasksList.size() > 0) {
+            for (Tasks tasks : tasksList) {
+                tasksDto = new TasksDto();
+                tasksDto.setTaskId(tasks.getTaskId());
+                tasksDto.setTaskTitle(tasks.getTaskTitle());
+                tasksDto.setTaskDetails(tasks.getTaskDetails());
+                tasksDto.setTaskPriority(tasks.getTaskPriority());
+                tasksDto.setTaskStatus(tasks.getTaskStatus());
+                tasksDto.setTaskIsActive(tasks.getTaskIsActive());
 
-        for (Tasks tasks : tasksList) {
-            tasksDto = new TasksDto();
-            tasksDto.setTaskId(tasks.getTaskId());
-            tasksDto.setTaskTitle(tasks.getTaskTitle());
-            tasksDto.setTaskDetails(tasks.getTaskDetails());
-            tasksDto.setPriority(tasks.getPriority());
-            tasksDto.setIsActive(tasks.getIsActive());
-
-            tasksDtoList.add(tasksDto);
+                tasksDtoList.add(tasksDto);
+            }
         }
         model.addAttribute("tasksList", tasksDtoList);
     }
@@ -101,18 +83,19 @@ public class TasksService {
             Tasks tasks = new Tasks();
 
             if (tasksDto.getTaskDetails() == null) {
-                tasks.setCreatedAt(Utils.strToDt(Utils.getCurrentDateTime(), DATE_TIME_FORMAT));
+                tasks.setTaskCreatedAt(Utils.strToDt(Utils.getCurrentDateTime(), DATE_TIME_FORMAT));
             } else {
                 Tasks task = tasksRepository.getTasksById(tasksDto.getTaskId());
                 tasks.setTaskId(task.getTaskId());
-                tasks.setCreatedAt(task.getCreatedAt());
-                tasks.setCompletedAt(task.getCompletedAt());
-                tasks.setModifiedAt(Utils.strToDt(Utils.getCurrentDateTime(), DATE_TIME_FORMAT));
+                tasks.setTaskCreatedAt(task.getTaskCreatedAt());
+                tasks.setTaskCompletedAt(task.getTaskCompletedAt());
+                tasks.setTaskModifiedAt(Utils.strToDt(Utils.getCurrentDateTime(), DATE_TIME_FORMAT));
             }
             tasks.setTaskTitle(tasksDto.getTaskTitle());
             tasks.setTaskDetails(tasksDto.getTaskDetails());
-            tasks.setPriority(tasksDto.getPriority());
-            tasks.setIsActive(tasksDto.getIsActive());
+            tasks.setTaskPriority(tasksDto.getTaskPriority());
+            tasks.setTaskStatus(tasksDto.getTaskStatus());
+            tasks.setTaskIsActive(tasksDto.getTaskIsActive());
 
             this.tasksRepository.save(tasks);
 
@@ -125,26 +108,6 @@ public class TasksService {
     }
 
     /**
-     * Get Tasks by taskId
-     * @param taskId
-     * @return Map
-     */
-
-    public Map<String, Object> getTasksByTaskId(Integer taskId) {
-        Map<String, Object> taskMap = new HashMap<>();
-
-        Tasks tasks = tasksRepository.findByTaskId(taskId);
-        if (tasks != null) {
-            taskMap.put("taskTitle", tasks.getTaskTitle());
-            taskMap.put("taskDetails", tasks.getTaskDetails());
-            taskMap.put("priority", tasks.getPriority());
-            taskMap.put("isActive", tasks.getIsActive());
-        }
-
-        return taskMap;
-    }
-
-    /**
      * Delete Tasks Service
      * @param taskId
      */
@@ -152,4 +115,45 @@ public class TasksService {
         tasksRepository.deleteByTaskId(taskId);
     }
 
+    /**
+     * Get all Tasks for server side data table
+     * @param search
+     * @param limit
+     * @param offset
+     * @return Map
+     */
+    public Map<String, Object> getAllTasks(String search, Integer limit, Integer offset) {
+        Long countTasks = tasksRepository.count();
+        List<TasksDto> tasksDtoList = new ArrayList<>();
+        List<Tasks> tasksList = null;
+        Map<String, Object> map = new HashMap<>();
+
+        if (!StringUtils.isEmpty(search)) {
+            tasksList = tasksRepository.getAllTasksByAll(search, limit, offset);
+            map.put("total", tasksRepository.getTasksListCount(search));
+        } else {
+            tasksList = tasksRepository.getAllTasks(limit, offset);
+            map.put("total", countTasks);
+        }
+
+        TasksDto tasksDto = null;
+
+        if (tasksList != null & tasksList.size() > 0) {
+            for (Tasks tasks : tasksList) {
+                tasksDto = new TasksDto();
+                tasksDto.setTaskId(tasks.getTaskId());
+                tasksDto.setTaskTitle(tasks.getTaskTitle());
+                tasksDto.setTaskDetails(tasks.getTaskDetails());
+                tasksDto.setTaskPriority(tasks.getTaskPriority());
+                tasksDto.setTaskStatus(tasks.getTaskStatus());
+                tasksDto.setTaskIsActive(tasks.getTaskIsActive());
+
+                tasksDtoList.add(tasksDto);
+            }
+        }
+
+        map.put("totalNotFiltered", countTasks);
+        map.put("rows", tasksDtoList);
+        return map;
+    }
 }
