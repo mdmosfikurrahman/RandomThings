@@ -21,6 +21,7 @@ import java.util.Map;
  * Tasks Controller.
  * @author Md. Mosfikur Rahman
  */
+
 @Controller
 public class TasksController {
     private final TasksService tasksService;
@@ -28,7 +29,6 @@ public class TasksController {
 
     /**
      * Dependency injection via autowire.
-     *
      * @param tasksService
      * @param utils
      */
