@@ -1,6 +1,6 @@
 package com.epde.rt.controller;
 
-import com.epde.rt.model.Tasks;
+import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.service.TasksService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

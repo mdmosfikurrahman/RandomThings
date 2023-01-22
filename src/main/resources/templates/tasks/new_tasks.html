@@ -4,7 +4,13 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Tasks Application System</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
 </head>
 
 <body>
@@ -14,28 +20,49 @@
     <h2>Save Tasks</h2>
 
     <form action="#" th:action="@{/saveTasks}" th:object="${tasks}" method="POST">
-        <label>
-            <input type="text" th:field="*{taskTitle}" placeholder="Title" class="form-control mb-4 col-4">
-        </label>
 
-        <label>
-            <input type="text" th:field="*{taskDetails}" placeholder="Details" class="form-control mb-4 col-4">
-        </label>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" th:field="*{taskTitle}" placeholder="Title" class="form-control">
+        </div>
 
-        <label>
-            <input type="text" th:field="*{taskPriority}" placeholder="Priority" class="form-control mb-4 col-4">
-        </label>
+        <div class="form-group">
+            <label>Details</label>
+            <input type="text" th:field="*{taskDetails}" placeholder="Details" class="form-control">
+        </div>
 
-        <label>
-            <input type="text" th:field="*{taskStatus}" placeholder="Status" class="form-control mb-4 col-4">
-        </label>
+        <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" th:field="*{taskPriority}" id="taskPriority">
+                <option value="">Select Priority</option>
+                <option th:each="taskPriority : ${T(com.epde.rt.model.tasks.enums.TaskPriority).values()}"
+                th:value="${taskPriority}"
+                th:text="${taskPriority}">
+                    Task Priority
+                </option>
+            </select>
 
-        <button type="submit" class="btn btn-info col-2"> Save Tasks</button>
+        </div>
+
+
+        <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" th:field="*{taskStatus}" id="taskStatus">
+                <option value="">Select Status</option>
+                <option th:each="taskStatus : ${T(com.epde.rt.model.tasks.enums.TaskStatus).values()}"
+                        th:value="${taskStatus}"
+                        th:text="${taskStatus}">
+                    Task Status
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
     <hr>
 
-    <a th:href="@{/static}"> Back to Tasks List</a>
+    <a th:href="@{/}"> Back to Tasks List</a>
 </div>
 </body>
 
