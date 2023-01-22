@@ -1,6 +1,6 @@
 package com.epde.rt.service;
 
-import com.epde.rt.model.Tasks;
+import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.repository.TasksRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
