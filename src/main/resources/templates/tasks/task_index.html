@@ -40,6 +40,17 @@
                     Status
                 </a>
             </th>
+
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskCreateDate&sortDir=' + ${reverseSortDir}}">
+                    Creation Date
+                </a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskCompleteDate&sortDir=' + ${reverseSortDir}}">
+                    Completion Date
+                </a>
+            </th>
         </tr>
         </thead>
 
@@ -53,6 +64,8 @@
             <td th:text="${tasks.taskDetails}"></td>
             <td th:text="${tasks.taskPriority}"></td>
             <td th:text="${tasks.taskStatus}"></td>
+            <td th:text="${#dates.format(tasks.taskCreateDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${#dates.format(tasks.taskCompleteDate, 'dd-MMM-yyyy')}"></td>
         </tr>
         </tbody>
     </table>

@@ -22,17 +22,22 @@ public class TasksController {
         return findPaginated(1, "taskTitle", "asc", model);
     }
 
+    @GetMapping("/error")
+    public String errorPage(){
+        return "404";
+    }
+
+    // create model attribute to bind form data
     @GetMapping("/showNewTasksForm")
     public String showNewTasksForm(Model model) {
-        // create model attribute to bind form data
         Tasks tasks = new Tasks();
         model.addAttribute("tasks", tasks);
         return "tasks/new_tasks";
     }
 
+    // save task to database
     @PostMapping("/saveTasks")
     public String saveTasks(@ModelAttribute("tasks") Tasks tasks) {
-        // save task to database
         tasksService.saveTasks(tasks);
         return "redirect:/";
     }
