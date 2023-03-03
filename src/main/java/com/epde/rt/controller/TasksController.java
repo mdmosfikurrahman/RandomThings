@@ -17,7 +17,7 @@ public class TasksController {
         this.tasksService = tasksService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/tasks")
     public String viewHomePage(Model model) {
         return findPaginated(1, "taskTitle", "asc", model);
     }
@@ -34,7 +34,7 @@ public class TasksController {
     @PostMapping("/saveTasks")
     public String saveTasks(@ModelAttribute("tasks") Tasks tasks) {
         tasksService.saveTasks(tasks);
-        return "redirect:/";
+        return "redirect:/tasks";
     }
 
     @GetMapping("/showFormForUpdate/{taskId}")
@@ -53,7 +53,7 @@ public class TasksController {
 
         // call delete task method
         this.tasksService.deleteTaskById(taskId);
-        return "redirect:/";
+        return "redirect:/tasks";
     }
 
     @GetMapping("/page/{pageNo}")
@@ -63,12 +63,12 @@ public class TasksController {
                                 Model model) {
         int pageSize = 5;
 
-        Page < Tasks > page = tasksService.findPaginated(pageNo, pageSize, sortField, sortDir);
-        List < Tasks > listTasks = page.getContent();
+        Page < Tasks > tasksPage = tasksService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List < Tasks > listTasks = tasksPage.getContent();
 
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("totalPages", tasksPage.getTotalPages());
+        model.addAttribute("totalItems", tasksPage.getTotalElements());
 
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);

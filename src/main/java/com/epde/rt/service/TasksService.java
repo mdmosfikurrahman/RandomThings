@@ -20,7 +20,7 @@ public class TasksService {
     }
 
     // to view all tasks in home page
-    public List < Tasks > getAllTasks() {
+    public List<Tasks> getAllTasks() {
         return tasksRepository.findAll();
     }
 
@@ -30,12 +30,12 @@ public class TasksService {
     }
 
     public Tasks getTasksById(long taskId) {
-        Optional< Tasks > optional = tasksRepository.findById(taskId);
+        Optional<Tasks> optionalTasks = tasksRepository.findById(taskId);
         Tasks tasks;
-        if (optional.isPresent()) {
-            tasks = optional.get();
+        if (optionalTasks.isPresent()) {
+            tasks = optionalTasks.get();
         } else {
-            throw new RuntimeException(" Tasks not found for ID :: " + taskId);
+            throw new RuntimeException("Tasks not found for ID :: " + taskId);
         }
         return tasks;
     }
@@ -45,8 +45,7 @@ public class TasksService {
     }
 
     public Page<Tasks> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-                Sort.by(sortField).descending();
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.tasksRepository.findAll(pageable);
