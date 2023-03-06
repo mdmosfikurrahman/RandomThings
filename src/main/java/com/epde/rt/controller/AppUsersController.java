@@ -31,7 +31,7 @@ public class AppUsersController {
     public String showNewUserForm(Model model) {
         AppUsers users = new AppUsers();
         model.addAttribute("users", users);
-        return "users/new_users";
+        return "users/new_user";
     }
 
     // save users to database
@@ -77,6 +77,6 @@ public class AppUsersController {
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         model.addAttribute("appUsersList", appUsersList);
-        return "tasks/task_index";
+        return "users/user_index";
     }
 }

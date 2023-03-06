@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="ISO-8859-1">
     <title>Users Management Portal</title>
@@ -12,17 +11,18 @@
     <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
 </head>
+
 <body style="font-family:Cursive, cursive">
 <h1 align="center">Users Management Portal</h1>
 <div class="container">
     <hr>
-    <h2>Update Users</h2>
+    <h2>Save Users</h2>
     <form action="#" th:action="@{/saveUsers}" th:object="${users}" method="POST">
 
-        <input type="hidden" th:field="*{userId}" />
+        <input type="hidden"/>
         <div class="form-group">
             <label></label>
-            <input type="hidden" th:field="*{userId}" />
+            <input type="hidden"/>
         </div>
 
         <div class="form-group">
@@ -63,11 +63,33 @@
         </div>
 
         <div class="form-group">
+            <label>Username</label>
+            <input type="text" th:field="*{username}" placeholder="Username" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="Password" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Role</label>
+            <select class="form-control" th:field="*{userRole}" id="userRole">
+                <option value="">Select Role</option>
+                <option th:each="userRole : ${T(com.epde.rt.model.users.enums.UserRole).values()}"
+                        th:value="${userRole}"
+                        th:text="${userRole}">
+                    Task Status
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label>Date of Birth</label>
             <input type="date" th:field="*{userDateOfBirth}" placeholder="Date of Birth" class="form-control">
         </div>
 
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <hr>
 
