@@ -27,7 +27,7 @@ public class TasksController {
     public String showNewTasksForm(Model model) {
         Tasks tasks = new Tasks();
         model.addAttribute("tasks", tasks);
-        return "tasks/new_tasks";
+        return "new_task";
     }
 
     // save task to database
@@ -45,7 +45,7 @@ public class TasksController {
 
         // set task as a model attribute to pre-populate the form
         model.addAttribute("tasks", tasks);
-        return "tasks/update_tasks";
+        return "tasks/update_task";
     }
 
     @GetMapping("/deleteTask/{taskId}")
