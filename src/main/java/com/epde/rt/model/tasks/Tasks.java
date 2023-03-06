@@ -15,7 +15,7 @@ import java.util.Date;
 @ToString
 public class Tasks {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     @NonNull
     private String taskTitle;

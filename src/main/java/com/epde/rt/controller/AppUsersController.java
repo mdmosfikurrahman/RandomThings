@@ -41,7 +41,7 @@ public class AppUsersController {
         return "redirect:/users";
     }
 
-    @GetMapping("/showFormForUpdate/{userId}")
+    @GetMapping("/showUserFormForUpdate/{userId}")
     public String showFormForUpdate(@PathVariable(value = "userId") long userId, Model model) {
         // get user from the service
         AppUsers users = usersService.getUserById(userId);
@@ -59,22 +59,22 @@ public class AppUsersController {
     }
 
     @GetMapping("/userPage/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
-                                @RequestParam("sortField") String sortField,
-                                @RequestParam("sortDir") String sortDir,
+    public String findPaginated(@PathVariable(value = "pageNo") int userPageNo,
+                                @RequestParam("sortField") String userSortField,
+                                @RequestParam("sortDir") String userSortDir,
                                 Model model) {
         int pageSize = 5;
 
-        Page<AppUsers> usersPage = usersService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        Page<AppUsers> usersPage = usersService.findPaginated(userPageNo, pageSize, userSortField, userSortDir);
         List< AppUsers > appUsersList = usersPage.getContent();
 
-        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("currentPage", userPageNo);
         model.addAttribute("totalPages", usersPage.getTotalPages());
         model.addAttribute("totalItems", usersPage.getTotalElements());
 
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("sortField", userSortField);
+        model.addAttribute("sortDir", userSortDir);
+        model.addAttribute("reverseSortDir", userSortDir.equals("asc") ? "desc" : "asc");
 
         model.addAttribute("appUsersList", appUsersList);
         return "users/user_index";
