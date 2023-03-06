@@ -27,7 +27,7 @@ public class TasksController {
     public String showNewTasksForm(Model model) {
         Tasks tasks = new Tasks();
         model.addAttribute("tasks", tasks);
-        return "new_task";
+        return "tasks/new_task";
     }
 
     // save task to database
@@ -37,7 +37,7 @@ public class TasksController {
         return "redirect:/tasks";
     }
 
-    @GetMapping("/showFormForUpdate/{taskId}")
+    @GetMapping("/showTaskFormForUpdate/{taskId}")
     public String showFormForUpdate(@PathVariable( value = "taskId") long taskId, Model model) {
 
         // get task from the service
