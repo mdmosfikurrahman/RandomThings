@@ -58,7 +58,7 @@ public class AppUsersController {
         return "redirect:/users";
     }
 
-    @GetMapping("/page/{pageNo}")
+    @GetMapping("/userPage/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,
