@@ -56,7 +56,7 @@ public class TasksController {
         return "redirect:/tasks";
     }
 
-    @GetMapping("/page/{pageNo}")
+    @GetMapping("/taskPage/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam("sortDir") String sortDir,

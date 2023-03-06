@@ -23,33 +23,33 @@
         <tr>
             <th>Actions</th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskTitle&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskTitle&sortDir=' + ${reverseSortDir}}">
                     Title
                 </a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskDetails&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskDetails&sortDir=' + ${reverseSortDir}}">
                     Details
                 </a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskPriority&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskPriority&sortDir=' + ${reverseSortDir}}">
                     Priority
                 </a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskStatus&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskStatus&sortDir=' + ${reverseSortDir}}">
                     Status
                 </a>
             </th>
 
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskCreateDate&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskCreateDate&sortDir=' + ${reverseSortDir}}">
                     Creation Date
                 </a>
             </th>
             <th>
-                <a th:href="@{'/page/' + ${currentPage} + '?sortField=taskCompleteDate&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/taskPage/' + ${currentPage} + '?sortField=taskCompleteDate&sortDir=' + ${reverseSortDir}}">
                     Completion Date
                 </a>
             </th>
@@ -79,17 +79,17 @@
             </div>
             <div class = "col-sm-1">
      <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-      <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+      <a th:if="${currentPage != i}" th:href="@{'/taskPage/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
       <span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
      </span>
             </div>
             <div class = "col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                <a th:if="${currentPage < totalPages}" th:href="@{'/taskPage/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
                 <span th:unless="${currentPage < totalPages}">Next</span>
             </div>
 
             <div class="col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+                <a th:if="${currentPage < totalPages}" th:href="@{'/taskPage/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
                 <span th:unless="${currentPage < totalPages}">Last</span>
             </div>
         </div>
