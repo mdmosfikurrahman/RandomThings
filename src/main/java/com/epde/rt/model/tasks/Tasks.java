@@ -1,38 +1,33 @@
 package com.epde.rt.model.tasks;
 
 import com.epde.rt.model.tasks.enums.TaskPriority;
-import com.epde.rt.model.tasks.enums.TaskStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Data
-@ToString
+@NoArgsConstructor
 public class Tasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
-    @NonNull
+    @Column(nullable = false)
     private String taskTitle;
-    @NonNull
+    @Column(nullable = false)
     private String taskDetails;
-    @NonNull
+    @Column(nullable = false)
     private TaskPriority taskPriority;
-    private TaskStatus taskStatus;
-    @NonNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date taskCreateDate;
+    @Column(nullable = false)
+    private Boolean taskCompleted;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date taskCompleteDate;
-
-
-    public Tasks() {
-
+    public Tasks(String taskTitle, String taskDetails, TaskPriority taskPriority, Boolean taskCompleted) {
+        this.taskTitle = taskTitle;
+        this.taskDetails = taskDetails;
+        this.taskPriority = taskPriority;
+        this.taskCompleted = taskCompleted;
     }
 }
+

@@ -1,80 +1,61 @@
 package com.epde.rt.controller;
 
+import com.epde.rt.dto.TaskDto;
+import com.epde.rt.exception.TaskNotFoundException;
 import com.epde.rt.model.tasks.Tasks;
-import com.epde.rt.service.TasksService;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import com.epde.rt.service.tasks.TasksServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/tasks")
 public class TasksController {
-    private final TasksService tasksService;
+    private final TasksServiceImpl tasksService;
 
-    public TasksController(TasksService tasksService) {
+    public TasksController(TasksServiceImpl tasksService) {
         this.tasksService = tasksService;
     }
 
-    @GetMapping("/tasks")
-    public String viewHomePage(Model model) {
-        return findPaginated(1, "taskTitle", "asc", model);
+    @GetMapping
+    public List<Tasks> getAllTasks(){
+        return tasksService.getAllTasks();
     }
 
-    // create model attribute to bind form data
-    @GetMapping("/showNewTasksForm")
-    public String showNewTasksForm(Model model) {
-        Tasks tasks = new Tasks();
-        model.addAttribute("tasks", tasks);
-        return "tasks/new_task";
+    @GetMapping("/{taskId}")
+    public Tasks getTaskById(@PathVariable Long taskId) {
+        return tasksService.getTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
-    // save task to database
-    @PostMapping("/saveTasks")
-    public String saveTasks(@ModelAttribute("tasks") Tasks tasks) {
-        tasksService.saveTasks(tasks);
-        return "redirect:/tasks";
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
+        Tasks tasks = new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskDto.getTaskPriority(),
+                taskDto.getTaskCompleted()
+        );
+        return tasksService.createTask(tasks);
     }
 
-    @GetMapping("/showTaskFormForUpdate/{taskId}")
-    public String showFormForUpdate(@PathVariable( value = "taskId") long taskId, Model model) {
-
-        // get task from the service
-        Tasks tasks = tasksService.getTasksById(taskId);
-
-        // set task as a model attribute to pre-populate the form
-        model.addAttribute("tasks", tasks);
-        return "tasks/update_task";
+    @PutMapping("/{taskId}")
+    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
+        Tasks tasks = new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskDto.getTaskPriority(),
+                taskDto.getTaskCompleted()
+        );
+        return tasksService.updateTask(taskId, tasks)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
-    @GetMapping("/deleteTask/{taskId}")
-    public String deleteTask(@PathVariable (value = "taskId") long taskId) {
-
-        // call delete task method
-        this.tasksService.deleteTaskById(taskId);
-        return "redirect:/tasks";
-    }
-
-    @GetMapping("/taskPage/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
-                                @RequestParam("sortField") String sortField,
-                                @RequestParam("sortDir") String sortDir,
-                                Model model) {
-        int pageSize = 5;
-
-        Page < Tasks > tasksPage = tasksService.findPaginated(pageNo, pageSize, sortField, sortDir);
-        List < Tasks > listTasks = tasksPage.getContent();
-
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", tasksPage.getTotalPages());
-        model.addAttribute("totalItems", tasksPage.getTotalElements());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("listTasks", listTasks);
-        return "tasks/task_index";
+    @DeleteMapping("/{taskId}")
+    public void deleteTaskById(@PathVariable Long taskId) {
+        tasksService.deleteTaskById(taskId);
     }
 }
