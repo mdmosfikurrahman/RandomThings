@@ -1,7 +1,6 @@
 package com.epde.rt.model.tasks;
 
 import com.epde.rt.model.tasks.enums.TaskPriority;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
