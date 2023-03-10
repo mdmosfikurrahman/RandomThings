@@ -15,6 +15,8 @@ public interface TasksService {
 
     Optional<Tasks> updateTask(Long taskId, Tasks tasks);
 
-    void deleteTaskById(Long taskId);
+    Optional<Tasks> deleteTaskById(Long taskId);
+
+    void deleteAllTasks();
 
 }

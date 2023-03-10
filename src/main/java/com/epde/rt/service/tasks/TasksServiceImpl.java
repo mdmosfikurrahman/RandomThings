@@ -42,7 +42,16 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
-    public void deleteTaskById(Long taskId) {
-        repository.deleteById(taskId);
+    public Optional<Tasks> deleteTaskById(Long taskId) {
+        Optional<Tasks> optionalTasks = repository.findById(taskId);
+        if (optionalTasks.isPresent()) {
+            repository.deleteById(taskId);
+        }
+        return optionalTasks;
+    }
+
+    @Override
+    public void deleteAllTasks() {
+        repository.deleteAll();
     }
 }

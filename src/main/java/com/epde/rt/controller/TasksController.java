@@ -55,7 +55,13 @@ public class TasksController {
     }
 
     @DeleteMapping("/{taskId}")
-    public void deleteTaskById(@PathVariable Long taskId) {
-        tasksService.deleteTaskById(taskId);
+    public Tasks deleteTaskById(@PathVariable Long taskId) {
+        return tasksService.deleteTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+    }
+
+    @DeleteMapping
+    public void deleteAllTasks(){
+        tasksService.deleteAllTasks();
     }
 }
