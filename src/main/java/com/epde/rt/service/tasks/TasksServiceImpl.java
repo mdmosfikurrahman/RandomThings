@@ -1,5 +1,6 @@
 package com.epde.rt.service.tasks;
 
+import com.epde.rt.exception.TaskAlreadyExistsException;
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.repository.TasksRepository;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,19 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
-    public Tasks createTask(Tasks tasks) {
-        return repository.save(tasks);
+    public Optional<Tasks> getTaskByTaskTitle(String taskTitle) {
+        return repository.findByTaskTitle(taskTitle);
     }
+
+    @Override
+    public void createTask(Tasks tasks) {
+        Optional<Tasks> optionalTask = repository.findByTaskTitle(tasks.getTaskTitle());
+        if (optionalTask.isPresent()) {
+            throw new TaskAlreadyExistsException("Task already exists with title: " + tasks.getTaskTitle());
+        }
+        repository.save(tasks);
+    }
+
 
     @Override
     public Optional<Tasks> updateTask(Long taskId, Tasks tasks) {

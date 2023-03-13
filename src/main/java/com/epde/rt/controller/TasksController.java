@@ -20,48 +20,40 @@ public class TasksController {
     }
 
     @GetMapping
-    public List<Tasks> getAllTasks(){
+    public List<Tasks> getAllTasks() {
         return tasksService.getAllTasks();
     }
 
-    @GetMapping("/{taskId}")
+    @GetMapping("/id-{taskId}")
     public Tasks getTaskById(@PathVariable Long taskId) {
-        return tasksService.getTaskById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.getTaskById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    }
+
+    @GetMapping("/title-{taskTitle}")
+    public Tasks getTaskByTitle(@PathVariable String taskTitle) {
+        return tasksService.getTaskByTaskTitle(taskTitle).orElseThrow(() -> new TaskNotFoundException(taskTitle));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = new Tasks(
-                taskDto.getTaskTitle(),
-                taskDto.getTaskDetails(),
-                taskDto.getTaskPriority(),
-                taskDto.getTaskCompleted()
-        );
-        return tasksService.createTask(tasks);
+    public void createTask(@Valid @RequestBody TaskDto taskDto) {
+        Tasks tasks = new Tasks(taskDto.getTaskTitle(), taskDto.getTaskDetails(), taskDto.getTaskPriority(), taskDto.getTaskCompleted());
+        tasksService.createTask(tasks);
     }
 
-    @PutMapping("/{taskId}")
+    @PutMapping("/id-{taskId}")
     public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = new Tasks(
-                taskDto.getTaskTitle(),
-                taskDto.getTaskDetails(),
-                taskDto.getTaskPriority(),
-                taskDto.getTaskCompleted()
-        );
-        return tasksService.updateTask(taskId, tasks)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        Tasks tasks = new Tasks(taskDto.getTaskTitle(), taskDto.getTaskDetails(), taskDto.getTaskPriority(), taskDto.getTaskCompleted());
+        return tasksService.updateTask(taskId, tasks).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
-    @DeleteMapping("/{taskId}")
+    @DeleteMapping("/id-{taskId}")
     public Tasks deleteTaskById(@PathVariable Long taskId) {
-        return tasksService.deleteTaskById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.deleteTaskById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @DeleteMapping
-    public void deleteAllTasks(){
+    public void deleteAllTasks() {
         tasksService.deleteAllTasks();
     }
 }
