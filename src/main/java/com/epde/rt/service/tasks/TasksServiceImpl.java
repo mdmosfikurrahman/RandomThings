@@ -30,15 +30,18 @@ public class TasksServiceImpl implements TasksService {
     @Override
     public Optional<Tasks> getTaskByTaskTitle(String taskTitle) {
         return repository.findByTaskTitle(taskTitle);
+
+
     }
 
     @Override
-    public void createTask(Tasks tasks) {
+    public Tasks createTask(Tasks tasks) {
         Optional<Tasks> taskTitle = repository.findByTaskTitle(tasks.getTaskTitle());
         if (taskTitle.isPresent()) {
             throw new TaskAlreadyExistsException("Task already exists with title: " + tasks.getTaskTitle());
         }
         repository.save(tasks);
+        return tasks;
     }
 
 
