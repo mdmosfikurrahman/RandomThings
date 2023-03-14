@@ -27,17 +27,19 @@ public class TasksController {
 
     @GetMapping("/id-{taskId}")
     public Tasks getTaskById(@PathVariable Long taskId) {
-        return tasksService.getTaskById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.getTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @GetMapping("/title-{taskTitle}")
     public Tasks getTaskByTitle(@PathVariable String taskTitle) {
-        return tasksService.getTaskByTaskTitle(taskTitle).orElseThrow(() -> new TaskNotFoundException(taskTitle));
+        return tasksService.getTaskByTaskTitle(taskTitle)
+                .orElseThrow(() -> new TaskNotFoundException(taskTitle));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@Valid @RequestBody TaskDto taskDto) {
+    public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
         taskDto.validateTaskPriority();
         TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
 
@@ -47,7 +49,7 @@ public class TasksController {
                 taskPriority,
                 taskDto.getTaskCompleted()
         );
-        tasksService.createTask(tasks);
+        return tasksService.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
@@ -61,12 +63,14 @@ public class TasksController {
                 taskPriority,
                 taskDto.getTaskCompleted()
         );
-        return tasksService.updateTask(taskId, tasks).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.updateTask(taskId, tasks)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @DeleteMapping("/id-{taskId}")
     public Tasks deleteTaskById(@PathVariable Long taskId) {
-        return tasksService.deleteTaskById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.deleteTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @DeleteMapping

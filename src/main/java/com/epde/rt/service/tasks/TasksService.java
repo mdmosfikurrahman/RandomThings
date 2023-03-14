@@ -12,7 +12,7 @@ public interface TasksService {
 
     Optional<Tasks> getTaskByTaskTitle(String taskTitle);
 
-    void createTask(Tasks tasks);
+    Tasks createTask(Tasks tasks);
 
     Optional<Tasks> updateTask(Long taskId, Tasks tasks);
 
