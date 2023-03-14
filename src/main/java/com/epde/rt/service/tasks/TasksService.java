@@ -1,5 +1,6 @@
 package com.epde.rt.service.tasks;
 
+import com.epde.rt.dto.TaskDto;
 import com.epde.rt.model.tasks.Tasks;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface TasksService {
     List<Tasks> deleteTaskById(Long taskId);
 
     void deleteAllTasks();
+
+    Tasks addOrUpdateMethod(TaskDto taskDto);
 
 }

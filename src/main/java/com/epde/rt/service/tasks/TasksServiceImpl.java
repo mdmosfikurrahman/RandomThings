@@ -1,8 +1,10 @@
 package com.epde.rt.service.tasks;
 
+import com.epde.rt.dto.TaskDto;
 import com.epde.rt.exception.ResourceAlreadyExistsException;
 import com.epde.rt.exception.ResourceNotFoundException;
 import com.epde.rt.model.tasks.Tasks;
+import com.epde.rt.model.tasks.enums.TaskPriority;
 import com.epde.rt.repository.TasksRepository;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +88,19 @@ public class TasksServiceImpl implements TasksService {
     @Override
     public void deleteAllTasks() {
         repository.deleteAll();
+    }
+
+    public Tasks addOrUpdateMethod(TaskDto taskDto){
+        taskDto.validateTaskPriority();
+        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
+
+        Tasks tasks = new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskPriority,
+                taskDto.getTaskCompleted()
+        );
+
+        return tasks;
     }
 }
