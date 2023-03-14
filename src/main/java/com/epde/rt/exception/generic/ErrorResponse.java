@@ -1,4 +1,4 @@
-package com.epde.rt.exception;
+package com.epde.rt.exception.generic;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

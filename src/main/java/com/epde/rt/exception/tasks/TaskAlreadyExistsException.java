@@ -1,4 +1,4 @@
-package com.epde.rt.exception;
+package com.epde.rt.exception.tasks;
 
 public class TaskAlreadyExistsException extends RuntimeException {
 

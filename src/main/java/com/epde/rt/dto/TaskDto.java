@@ -1,5 +1,6 @@
 package com.epde.rt.dto;
 
+import com.epde.rt.exception.generic.InvalidEnumValueException;
 import com.epde.rt.model.tasks.enums.TaskPriority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,15 @@ public class TaskDto {
     @NotBlank(message = "Details is Mandatory!")
     private String taskDetails;
     @NotBlank(message = "Priority is Mandatory!")
-    private TaskPriority taskPriority;
+    private String taskPriority;
     @NotBlank(message = "Completion Status is Mandatory!")
     private Boolean taskCompleted;
+
+    public void validateTaskPriority() {
+        try {
+            TaskPriority.valueOf(taskPriority);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidEnumValueException("Invalid task priority: " + taskPriority);
+        }
+    }
 }
