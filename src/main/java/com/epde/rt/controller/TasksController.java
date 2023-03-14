@@ -1,7 +1,6 @@
 package com.epde.rt.controller;
 
 import com.epde.rt.dto.TaskDto;
-import com.epde.rt.exception.tasks.TaskNotFoundException;
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.model.tasks.enums.TaskPriority;
 import com.epde.rt.service.tasks.TasksServiceImpl;
@@ -27,14 +26,12 @@ public class TasksController {
 
     @GetMapping("/id-{taskId}")
     public Tasks getTaskById(@PathVariable Long taskId) {
-        return tasksService.getTaskById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.getTaskById(taskId);
     }
 
     @GetMapping("/title-{taskTitle}")
     public Tasks getTaskByTitle(@PathVariable String taskTitle) {
-        return tasksService.getTaskByTaskTitle(taskTitle)
-                .orElseThrow(() -> new TaskNotFoundException(taskTitle));
+        return tasksService.getTaskByTaskTitle(taskTitle);
     }
 
     @PostMapping
@@ -63,14 +60,12 @@ public class TasksController {
                 taskPriority,
                 taskDto.getTaskCompleted()
         );
-        return tasksService.updateTask(taskId, tasks)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        return tasksService.updateTask(taskId, tasks);
     }
 
     @DeleteMapping("/id-{taskId}")
-    public Tasks deleteTaskById(@PathVariable Long taskId) {
-        return tasksService.deleteTaskById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+    public List<Tasks> deleteTaskById(@PathVariable Long taskId) {
+        return tasksService.deleteTaskById(taskId);
     }
 
     @DeleteMapping

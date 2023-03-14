@@ -1,6 +1,6 @@
 package com.epde.rt.dto;
 
-import com.epde.rt.exception.generic.InvalidEnumValueException;
+import com.epde.rt.exception.InvalidEnumValueException;
 import com.epde.rt.model.tasks.enums.TaskPriority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
