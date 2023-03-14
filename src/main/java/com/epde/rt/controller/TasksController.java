@@ -2,7 +2,6 @@ package com.epde.rt.controller;
 
 import com.epde.rt.dto.TaskDto;
 import com.epde.rt.model.tasks.Tasks;
-import com.epde.rt.model.tasks.enums.TaskPriority;
 import com.epde.rt.service.tasks.TasksServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,29 +36,13 @@ public class TasksController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
-        taskDto.validateTaskPriority();
-        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
-
-        Tasks tasks = new Tasks(
-                taskDto.getTaskTitle(),
-                taskDto.getTaskDetails(),
-                taskPriority,
-                taskDto.getTaskCompleted()
-        );
+        Tasks tasks = tasksService.addOrUpdateMethod(taskDto);
         return tasksService.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
     public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
-        taskDto.validateTaskPriority();
-        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
-
-        Tasks tasks = new Tasks(
-                taskDto.getTaskTitle(),
-                taskDto.getTaskDetails(),
-                taskPriority,
-                taskDto.getTaskCompleted()
-        );
+        Tasks tasks = tasksService.addOrUpdateMethod(taskDto);
         return tasksService.updateTask(taskId, tasks);
     }
 
