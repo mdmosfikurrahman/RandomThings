@@ -1,4 +1,4 @@
-package com.epde.rt.exception;
+package com.epde.rt.exception.tasks;
 
 public class TaskNotFoundException extends RuntimeException {
     public TaskNotFoundException(Long taskId) {

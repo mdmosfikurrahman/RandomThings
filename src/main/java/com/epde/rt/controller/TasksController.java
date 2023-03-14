@@ -1,8 +1,9 @@
 package com.epde.rt.controller;
 
 import com.epde.rt.dto.TaskDto;
-import com.epde.rt.exception.TaskNotFoundException;
+import com.epde.rt.exception.tasks.TaskNotFoundException;
 import com.epde.rt.model.tasks.Tasks;
+import com.epde.rt.model.tasks.enums.TaskPriority;
 import com.epde.rt.service.tasks.TasksServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +38,29 @@ public class TasksController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = new Tasks(taskDto.getTaskTitle(), taskDto.getTaskDetails(), taskDto.getTaskPriority(), taskDto.getTaskCompleted());
+        taskDto.validateTaskPriority();
+        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
+
+        Tasks tasks = new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskPriority,
+                taskDto.getTaskCompleted()
+        );
         tasksService.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
     public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = new Tasks(taskDto.getTaskTitle(), taskDto.getTaskDetails(), taskDto.getTaskPriority(), taskDto.getTaskCompleted());
+        taskDto.validateTaskPriority();
+        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
+
+        Tasks tasks = new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskPriority,
+                taskDto.getTaskCompleted()
+        );
         return tasksService.updateTask(taskId, tasks).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
