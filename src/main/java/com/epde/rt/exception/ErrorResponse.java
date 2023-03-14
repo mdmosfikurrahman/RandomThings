@@ -1,4 +1,4 @@
-package com.epde.rt.exception.generic;
+package com.epde.rt.exception;
 
 import lombok.*;
 

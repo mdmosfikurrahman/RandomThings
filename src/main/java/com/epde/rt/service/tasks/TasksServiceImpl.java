@@ -1,6 +1,7 @@
 package com.epde.rt.service.tasks;
 
-import com.epde.rt.exception.tasks.TaskAlreadyExistsException;
+import com.epde.rt.exception.ResourceAlreadyExistsException;
+import com.epde.rt.exception.ResourceNotFoundException;
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.repository.TasksRepository;
 import org.springframework.stereotype.Service;
@@ -19,26 +20,34 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public List<Tasks> getAllTasks() {
-        return repository.findAll();
+        if (repository.count() != 0){
+            return repository.findAll();
+        } else {
+            throw new ResourceNotFoundException("No Tasks Found!");
+        }
     }
 
     @Override
-    public Optional<Tasks> getTaskById(Long taskId) {
-        return repository.findById(taskId);
+    public Tasks getTaskById(Long taskId) {
+        return repository.findById(taskId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Task not found with ID: " + taskId);
+                });
     }
 
     @Override
-    public Optional<Tasks> getTaskByTaskTitle(String taskTitle) {
-        return repository.findByTaskTitle(taskTitle);
-
-
+    public Tasks getTaskByTaskTitle(String taskTitle) {
+        return repository.findByTaskTitle(taskTitle)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Task not found with Title: " + taskTitle);
+                });
     }
 
     @Override
     public Tasks createTask(Tasks tasks) {
         Optional<Tasks> taskTitle = repository.findByTaskTitle(tasks.getTaskTitle());
         if (taskTitle.isPresent()) {
-            throw new TaskAlreadyExistsException("Task already exists with title: " + tasks.getTaskTitle());
+            throw new ResourceAlreadyExistsException("Task already exists with Title: " + tasks.getTaskTitle());
         }
         repository.save(tasks);
         return tasks;
@@ -46,28 +55,33 @@ public class TasksServiceImpl implements TasksService {
 
 
     @Override
-    public Optional<Tasks> updateTask(Long taskId, Tasks tasks) {
+    public Tasks updateTask(Long taskId, Tasks tasks) {
         Optional<Tasks> optionalTask = repository.findById(taskId);
         if (optionalTask.isPresent()) {
             tasks.setTaskId(taskId);
             Optional<Tasks> taskTitle = repository.findByTaskTitle(tasks.getTaskTitle());
             if (taskTitle.isPresent()) {
-                throw new TaskAlreadyExistsException("Task already exists with title: " + tasks.getTaskTitle());
+                throw new ResourceAlreadyExistsException("Task already exists with Title: " + tasks.getTaskTitle());
             } else {
                 repository.save(tasks);
             }
+        } else {
+            throw new ResourceNotFoundException("Task not found with ID: " + taskId);
         }
 
-        return optionalTask;
+        return tasks;
     }
 
     @Override
-    public Optional<Tasks> deleteTaskById(Long taskId) {
-        Optional<Tasks> optionalTasks = repository.findById(taskId);
-        if (optionalTasks.isPresent()) {
+    public List<Tasks> deleteTaskById(Long taskId) {
+
+        if (repository.findById(taskId).isPresent()){
             repository.deleteById(taskId);
+        } else {
+            throw new ResourceNotFoundException("Task not found with ID: " + taskId);
         }
-        return optionalTasks;
+
+        return repository.findAll();
     }
 
     @Override
