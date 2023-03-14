@@ -94,13 +94,11 @@ public class TasksServiceImpl implements TasksService {
         taskDto.validateTaskPriority();
         TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
 
-        Tasks tasks = new Tasks(
+        return new Tasks(
                 taskDto.getTaskTitle(),
                 taskDto.getTaskDetails(),
                 taskPriority,
                 taskDto.getTaskCompleted()
         );
-
-        return tasks;
     }
 }
