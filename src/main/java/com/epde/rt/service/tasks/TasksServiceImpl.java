@@ -74,11 +74,10 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public List<Tasks> deleteTaskById(Long taskId) {
-
-        if (repository.findById(taskId).isPresent()){
-            repository.deleteById(taskId);
-        } else {
+        if (repository.findById(taskId).isEmpty()) {
             throw new ResourceNotFoundException("Task not found with ID: " + taskId);
+        } else {
+            repository.deleteById(taskId);
         }
 
         return repository.findAll();
