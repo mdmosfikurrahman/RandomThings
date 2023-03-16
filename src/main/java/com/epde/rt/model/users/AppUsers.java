@@ -3,7 +3,6 @@ package com.epde.rt.model.users;
 
 import com.epde.rt.model.users.enums.AppUserGender;
 import com.epde.rt.model.users.enums.AppUserRole;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.ToString;

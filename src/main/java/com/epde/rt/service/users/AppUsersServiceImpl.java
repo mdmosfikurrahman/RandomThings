@@ -42,10 +42,9 @@ public class AppUsersServiceImpl implements AppUsersService {
      */
     @Override
     public AppUsers getUserById(Long userId) {
-        return repository.findById(userId)
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("User not found with ID: " + userId);
-                });
+        return repository.findById(userId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("User not found with ID: " + userId);
+        });
     }
 
     /**
@@ -55,10 +54,9 @@ public class AppUsersServiceImpl implements AppUsersService {
      */
     @Override
     public AppUsers getUserByUsername(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("User not found with username: " + username);
-                });
+        return repository.findByUsername(username).orElseThrow(() -> {
+            throw new ResourceNotFoundException("User not found with username: " + username);
+        });
     }
 
     /**
@@ -76,14 +74,14 @@ public class AppUsersServiceImpl implements AppUsersService {
     }
 
     /**
-     * @param userId User ID
+     * @param userId   User ID
      * @param appUsers It will Pass the values to update object for AppUsers
      * @return appUsers
      */
     @Override
     public AppUsers updateUser(Long userId, AppUsers appUsers) {
         Optional<AppUsers> optionalAppUser = repository.findById(userId);
-        if (optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             appUsers.setUserId(userId);
             Optional<AppUsers> username = repository.findByUsername(appUsers.getUsername());
             if (username.isPresent()) {
@@ -132,17 +130,6 @@ public class AppUsersServiceImpl implements AppUsersService {
         appUserDto.validateUserRole();
         AppUserRole appUserRole = AppUserRole.valueOf(appUserDto.getUserRole());
 
-        return new AppUsers(
-                appUserDto.getUserFirstName(),
-                appUserDto.getUserLastName(),
-                appUserDto.getUserEmail(),
-                appUserGender,
-                appUserDto.getUserAddress(),
-                appUserDto.getUserContactNumber(),
-                appUserDto.getUsername(),
-                appUserDto.getPassword(),
-                appUserRole,
-                appUserDto.getUserDateOfBirth()
-        );
+        return new AppUsers(appUserDto.getUserFirstName(), appUserDto.getUserLastName(), appUserDto.getUserEmail(), appUserGender, appUserDto.getUserAddress(), appUserDto.getUserContactNumber(), appUserDto.getUsername(), appUserDto.getPassword(), appUserRole, appUserDto.getUserDateOfBirth());
     }
 }
