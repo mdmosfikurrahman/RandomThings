@@ -1,6 +1,6 @@
 package com.epde.rt.model.users.enums;
 
-public enum UserRole {
+public enum AppUserRole {
     USER,
     ADMIN
 }

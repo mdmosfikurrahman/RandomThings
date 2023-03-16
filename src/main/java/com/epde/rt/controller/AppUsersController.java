@@ -1,82 +1,58 @@
 package com.epde.rt.controller;
 
+import com.epde.rt.dto.AppUserDto;
 import com.epde.rt.model.users.AppUsers;
-import com.epde.rt.service.AppUsersService;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import com.epde.rt.service.users.AppUsersServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/users")
 public class AppUsersController {
-    private final AppUsersService usersService;
+    private final AppUsersServiceImpl appUsersService;
 
-    public AppUsersController(AppUsersService usersService) {
-        this.usersService = usersService;
+    public AppUsersController(AppUsersServiceImpl appUsersService) {
+        this.appUsersService = appUsersService;
     }
 
-    @GetMapping("/users")
-    public String viewHomePage(Model model) {
-        return findPaginated(
-                1,
-                "userFirstName",
-                "asc",
-                model);
+    @GetMapping
+    public List<AppUsers> getAllUsers() {
+        return appUsersService.getAllUsers();
     }
 
-    // create model attribute to bind from data
-    @GetMapping("/showNewUserForm")
-    public String showNewUserForm(Model model) {
-        AppUsers users = new AppUsers();
-        model.addAttribute("users", users);
-        return "users/new_user";
+    @GetMapping("/id-{userId}")
+    public AppUsers getUserById(@PathVariable Long userId) {
+        return appUsersService.getUserById(userId);
     }
 
-    // save users to database
-    @PostMapping("/saveUsers")
-    public String saveUsers(@ModelAttribute("users") AppUsers users) {
-        usersService.saveUsers(users);
-        return "redirect:/users";
+    @GetMapping("/{username}")
+    public AppUsers getUserByUsername(@PathVariable String username) {
+        return appUsersService.getUserByUsername(username);
     }
 
-    @GetMapping("/showUserFormForUpdate/{userId}")
-    public String showFormForUpdate(@PathVariable(value = "userId") long userId, Model model) {
-        // get user from the service
-        AppUsers users = usersService.getUserById(userId);
-
-        // set user as a model attribute to pre-populate the form
-        model.addAttribute("users", users);
-        return "users/update_user";
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AppUsers createUser(@Valid @RequestBody AppUserDto appUserDto) {
+        AppUsers appUsers = appUsersService.addOrUpdate(appUserDto);
+        return appUsersService.createUser(appUsers);
     }
 
-    @GetMapping("/deleteUser/{userId}")
-    public String deleteUser(@PathVariable(value = "userId") long userId) {
-        // call delete user method
-        this.usersService.deleteUserById(userId);
-        return "redirect:/users";
+    @PutMapping("/id-{userId}")
+    public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody AppUserDto appUserDto) {
+        AppUsers users = appUsersService.addOrUpdate(appUserDto);
+        return appUsersService.updateUser(userId, users);
     }
 
-    @GetMapping("/userPage/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int userPageNo,
-                                @RequestParam("sortField") String userSortField,
-                                @RequestParam("sortDir") String userSortDir,
-                                Model model) {
-        int pageSize = 5;
+    @DeleteMapping("/id-{userId}")
+    public List<AppUsers> deleteUserById(@PathVariable Long userId) {
+        return appUsersService.deleteUserById(userId);
+    }
 
-        Page<AppUsers> usersPage = usersService.findPaginated(userPageNo, pageSize, userSortField, userSortDir);
-        List< AppUsers > appUsersList = usersPage.getContent();
-
-        model.addAttribute("currentPage", userPageNo);
-        model.addAttribute("totalPages", usersPage.getTotalPages());
-        model.addAttribute("totalItems", usersPage.getTotalElements());
-
-        model.addAttribute("sortField", userSortField);
-        model.addAttribute("sortDir", userSortDir);
-        model.addAttribute("reverseSortDir", userSortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("appUsersList", appUsersList);
-        return "users/user_index";
+    @DeleteMapping
+    public void deleteAllUsers() {
+        appUsersService.deleteAllAppUsers();
     }
 }

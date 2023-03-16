@@ -1,8 +1,9 @@
 package com.epde.rt.model.users;
 
 
-import com.epde.rt.model.users.enums.UserGender;
-import com.epde.rt.model.users.enums.UserRole;
+import com.epde.rt.model.users.enums.AppUserGender;
+import com.epde.rt.model.users.enums.AppUserRole;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.ToString;
@@ -28,7 +29,7 @@ public class AppUsers {
     @NonNull
     private String userEmail;
     @NonNull
-    private UserGender userGender;
+    private AppUserGender userGender;
     @NonNull
     private String userAddress;
     @NonNull
@@ -38,12 +39,25 @@ public class AppUsers {
     @NonNull
     private String password;
     @NonNull
-    private UserRole userRole;
+    private AppUserRole userRole;
     @NonNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date userDateOfBirth;
 
     public AppUsers() {
 
+    }
+
+    public AppUsers(@NonNull String userFirstName, @NonNull String userLastName, @NonNull String userEmail, @NonNull AppUserGender userGender, @NonNull String userAddress, @NonNull String userContactNumber, @NonNull String username, @NonNull String password, @NonNull AppUserRole userRole, @NonNull Date userDateOfBirth) {
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userEmail = userEmail;
+        this.userGender = userGender;
+        this.userAddress = userAddress;
+        this.userContactNumber = userContactNumber;
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+        this.userDateOfBirth = userDateOfBirth;
     }
 }
