@@ -36,13 +36,13 @@ public class TasksController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = tasksService.addOrUpdateMethod(taskDto);
+        Tasks tasks = tasksService.addOrUpdate(taskDto);
         return tasksService.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
     public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = tasksService.addOrUpdateMethod(taskDto);
+        Tasks tasks = tasksService.addOrUpdate(taskDto);
         return tasksService.updateTask(taskId, tasks);
     }
 

@@ -20,13 +20,18 @@ public class TasksServiceImpl implements TasksService {
         this.repository = repository;
     }
 
+    /**
+     * @return tasksList
+     */
     @Override
     public List<Tasks> getAllTasks() {
-        if (repository.count() != 0){
-            return repository.findAll();
+        List<Tasks> tasksList;
+        if (repository.count() != 0) {
+            tasksList = repository.findAll();
         } else {
             throw new ResourceNotFoundException("No Tasks Found!");
         }
+        return tasksList;
     }
 
     @Override
@@ -90,7 +95,7 @@ public class TasksServiceImpl implements TasksService {
         repository.deleteAll();
     }
 
-    public Tasks addOrUpdateMethod(TaskDto taskDto){
+    public Tasks addOrUpdate(TaskDto taskDto){
         taskDto.validateTaskPriority();
         TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
 
