@@ -22,5 +22,7 @@ public interface AppUsersService {
 
     void deleteAllAppUsers();
 
-    AppUsers addOrUpdate(AppUserDto appUserDto);
+    AppUsers addMethod(AppUserDto appUserDto);
+
+    AppUsers updateMethod(Long userId, AppUserDto appUserDto);
 }

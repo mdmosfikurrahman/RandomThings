@@ -3,11 +3,13 @@ package com.epde.rt.controller;
 import com.epde.rt.dto.AppUserDto;
 import com.epde.rt.model.users.AppUsers;
 import com.epde.rt.service.users.AppUsersServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -35,15 +37,19 @@ public class AppUsersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AppUsers createUser(@Valid @RequestBody AppUserDto appUserDto) {
-        AppUsers appUsers = appUsersService.addOrUpdate(appUserDto);
+    public AppUsers createUser(@RequestBody Map<String, Object> userData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
+        AppUsers appUsers = appUsersService.addMethod(appUserDto);
         return appUsersService.createUser(appUsers);
     }
 
     @PutMapping("/id-{userId}")
-    public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody AppUserDto appUserDto) {
-        AppUsers users = appUsersService.addOrUpdate(appUserDto);
-        return appUsersService.updateUser(userId, users);
+    public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody Map<String, Object> userData) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
+        AppUsers appUsers = appUsersService.updateMethod(userId, appUserDto);
+        return appUsersService.updateUser(userId, appUsers);
     }
 
     @DeleteMapping("/id-{userId}")

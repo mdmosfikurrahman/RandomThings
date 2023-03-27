@@ -20,6 +20,7 @@ public interface TasksService {
 
     void deleteAllTasks();
 
-    Tasks addOrUpdate(TaskDto taskDto);
+    Tasks addMethod(TaskDto taskDto);
 
+    Tasks updateMethod(Long taskId, TaskDto taskDto);
 }
