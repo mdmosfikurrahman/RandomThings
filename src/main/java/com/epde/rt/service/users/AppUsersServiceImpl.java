@@ -74,6 +74,32 @@ public class AppUsersServiceImpl implements AppUsersService {
     }
 
     /**
+     * @param appUserDto DTO (Data Transfer Object) will be passed due to Validate and Helping Method for Create
+     * @return AppUsers - Transferred and verified User Object
+     */
+    @Override
+    public AppUsers addMethod(AppUserDto appUserDto) {
+        appUserDto.validateUserGender();
+        AppUserGender appUserGender = AppUserGender.valueOf(appUserDto.getUserGender());
+
+        appUserDto.validateUserRole();
+        AppUserRole appUserRole = AppUserRole.valueOf(appUserDto.getUserRole());
+
+        return new AppUsers(
+                appUserDto.getUserFirstName(),
+                appUserDto.getUserLastName(),
+                appUserDto.getUserEmail(),
+                appUserGender,
+                appUserDto.getUserAddress(),
+                appUserDto.getUserContactNumber(),
+                appUserDto.getUsername(),
+                appUserDto.getPassword(),
+                appUserRole,
+                appUserDto.getUserDateOfBirth()
+        );
+    }
+
+    /**
      * @param userId   User ID
      * @param appUsers It will Pass the values to update object for AppUsers
      * @return appUsers
@@ -98,6 +124,38 @@ public class AppUsersServiceImpl implements AppUsersService {
 
     /**
      * @param userId User ID
+     * @param appUserDto DTO (Data Transfer Object) will be passed due to Validate and Helping Method for Create
+     * @return AppUsers - Transferred and verified User Object
+     */
+    @Override
+    public AppUsers updateMethod(Long userId, AppUserDto appUserDto) {
+        appUserDto.validateUserGender();
+        AppUserGender appUserGender = AppUserGender.valueOf(appUserDto.getUserGender());
+
+        appUserDto.validateUserRole();
+        AppUserRole appUserRole = AppUserRole.valueOf(appUserDto.getUserRole());
+
+        AppUsers userToUpdate = repository.findById(userId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("User not found with ID: " + userId);
+                });
+
+        userToUpdate.setUserFirstName(appUserDto.getUserFirstName());
+        userToUpdate.setUserLastName(appUserDto.getUserLastName());
+        userToUpdate.setUserEmail(appUserDto.getUserEmail());
+        userToUpdate.setUserGender(appUserGender);
+        userToUpdate.setUserAddress(appUserDto.getUserAddress());
+        userToUpdate.setUserContactNumber(appUserDto.getUserContactNumber());
+        userToUpdate.setUsername(appUserDto.getUsername());
+        userToUpdate.setPassword(appUserDto.getPassword());
+        userToUpdate.setUserRole(appUserRole);
+        userToUpdate.setUserDateOfBirth(appUserDto.getUserDateOfBirth());
+
+        return repository.save(userToUpdate);
+    }
+
+    /**
+     * @param userId User ID
      * @return appUsers
      */
     @Override
@@ -111,25 +169,10 @@ public class AppUsersServiceImpl implements AppUsersService {
     }
 
     /**
-     *
+     * Delete All Users
      */
     @Override
     public void deleteAllAppUsers() {
         repository.deleteAll();
-    }
-
-    /**
-     * @param appUserDto DTO (Data Transfer Object) will be passed due to Validate and Helping Method for Create or Update
-     * @return AppUsers - Transferred and verified User Object
-     */
-    @Override
-    public AppUsers addOrUpdate(AppUserDto appUserDto) {
-        appUserDto.validateUserGender();
-        AppUserGender appUserGender = AppUserGender.valueOf(appUserDto.getUserGender());
-
-        appUserDto.validateUserRole();
-        AppUserRole appUserRole = AppUserRole.valueOf(appUserDto.getUserRole());
-
-        return new AppUsers(appUserDto.getUserFirstName(), appUserDto.getUserLastName(), appUserDto.getUserEmail(), appUserGender, appUserDto.getUserAddress(), appUserDto.getUserContactNumber(), appUserDto.getUsername(), appUserDto.getPassword(), appUserRole, appUserDto.getUserDateOfBirth());
     }
 }

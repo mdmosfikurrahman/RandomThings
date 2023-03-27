@@ -3,11 +3,13 @@ package com.epde.rt.controller;
 import com.epde.rt.dto.TaskDto;
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.service.tasks.TasksServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -35,14 +37,18 @@ public class TasksController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tasks createTask(@Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = tasksService.addOrUpdate(taskDto);
+    public Tasks createTask(@Valid @RequestBody Map<String, Object> json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TaskDto taskDto = objectMapper.convertValue(json, TaskDto.class);
+        Tasks tasks = tasksService.addMethod(taskDto);
         return tasksService.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
-    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody TaskDto taskDto) {
-        Tasks tasks = tasksService.addOrUpdate(taskDto);
+    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody Map<String, Object> json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TaskDto taskDto = objectMapper.convertValue(json, TaskDto.class);
+        Tasks tasks = tasksService.updateMethod(taskId, taskDto);
         return tasksService.updateTask(taskId, tasks);
     }
 

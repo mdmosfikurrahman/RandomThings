@@ -43,10 +43,6 @@ public class AppUsers {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date userDateOfBirth;
 
-    public AppUsers() {
-
-    }
-
     public AppUsers(@NonNull String userFirstName, @NonNull String userLastName, @NonNull String userEmail, @NonNull AppUserGender userGender, @NonNull String userAddress, @NonNull String userContactNumber, @NonNull String username, @NonNull String password, @NonNull AppUserRole userRole, @NonNull Date userDateOfBirth) {
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
@@ -58,5 +54,9 @@ public class AppUsers {
         this.password = password;
         this.userRole = userRole;
         this.userDateOfBirth = userDateOfBirth;
+    }
+
+    public AppUsers() {
+
     }
 }

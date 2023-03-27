@@ -60,6 +60,17 @@ public class TasksServiceImpl implements TasksService {
         return tasks;
     }
 
+    public Tasks addMethod(TaskDto taskDto){
+        taskDto.validateTaskPriority();
+        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
+
+        return new Tasks(
+                taskDto.getTaskTitle(),
+                taskDto.getTaskDetails(),
+                taskPriority,
+                taskDto.getTaskCompleted()
+        );
+    }
 
     @Override
     public Tasks updateTask(Long taskId, Tasks tasks) {
@@ -80,6 +91,24 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
+    public Tasks updateMethod(Long taskId, TaskDto taskDto){
+        taskDto.validateTaskPriority();
+        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
+
+        Tasks tasksToUpdate = repository.findById(taskId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Task not found with ID: " + taskId);
+                });
+
+        tasksToUpdate.setTaskTitle(taskDto.getTaskTitle());
+        tasksToUpdate.setTaskDetails(taskDto.getTaskDetails());
+        tasksToUpdate.setTaskPriority(taskPriority);
+        tasksToUpdate.setTaskCompleted(taskDto.getTaskCompleted());
+
+        return repository.save(tasksToUpdate);
+    }
+
+    @Override
     public List<Tasks> deleteTaskById(Long taskId) {
         if (repository.findById(taskId).isEmpty()) {
             throw new ResourceNotFoundException("Task not found with ID: " + taskId);
@@ -93,17 +122,5 @@ public class TasksServiceImpl implements TasksService {
     @Override
     public void deleteAllTasks() {
         repository.deleteAll();
-    }
-
-    public Tasks addOrUpdate(TaskDto taskDto){
-        taskDto.validateTaskPriority();
-        TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
-
-        return new Tasks(
-                taskDto.getTaskTitle(),
-                taskDto.getTaskDetails(),
-                taskPriority,
-                taskDto.getTaskCompleted()
-        );
     }
 }
