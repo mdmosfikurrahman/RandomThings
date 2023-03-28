@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -21,12 +23,15 @@ public class AppUserDto {
     @NotBlank(message = "Last Name is Mandatory!")
     private String userLastName;
     @NotBlank(message = "Email Address is Mandatory!")
+    @Pattern(regexp = "^[\\w-.]+@[\\w.-]+\\.[a-zA-Z]{2,}$", message = "Invalid Email Address!")
     private String userEmail;
     @NotBlank(message = "Gender is Mandatory!")
     private String userGender;
     @NotBlank(message = "Address is Mandatory!")
     private String userAddress;
     @NotBlank(message = "Contact Number is Mandatory!")
+    @Pattern(regexp = "^[0-9]*$", message = "Invalid Contact Number!")
+    @Size(min = 10, max = 10, message = "Invalid Contact Number Length!")
     private String userContactNumber;
     @NotBlank(message = "User Name is Mandatory!")
     private String username;
