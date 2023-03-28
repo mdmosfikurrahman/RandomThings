@@ -4,19 +4,18 @@ package com.epde.rt.model.users;
 import com.epde.rt.model.users.enums.AppUserGender;
 import com.epde.rt.model.users.enums.AppUserRole;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
 @ToString
+@NoArgsConstructor
 public class AppUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,9 +53,5 @@ public class AppUsers {
         this.password = password;
         this.userRole = userRole;
         this.userDateOfBirth = userDateOfBirth;
-    }
-
-    public AppUsers() {
-
     }
 }
