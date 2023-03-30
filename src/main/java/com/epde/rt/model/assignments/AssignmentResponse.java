@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AssignmentResponse {
+    private Long assignmentId;
     private String taskTitle;
     private TaskPriority taskPriority;
     private Boolean taskCompleted;
