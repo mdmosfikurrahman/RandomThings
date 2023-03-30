@@ -1,6 +1,5 @@
 package com.epde.rt.controller;
 
-import com.epde.rt.model.assignments.Assignment;
 import com.epde.rt.model.assignments.AssignmentRequest;
 import com.epde.rt.model.assignments.AssignmentResponse;
 import com.epde.rt.service.assignments.AssignmentService;
@@ -26,15 +25,7 @@ public class AssignmentController {
     public AssignmentResponse assignTask(@Valid @RequestBody Map<String, Object> assignmentInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
         AssignmentRequest assignmentRequest = objectMapper.convertValue(assignmentInfo, AssignmentRequest.class);
-        Assignment assignment = service.assignTask(assignmentRequest.getTaskId(), assignmentRequest.getUserId());
-
-        AssignmentResponse response = new AssignmentResponse(
-                assignment.getTask().getTaskTitle(),
-                assignment.getTask().getTaskPriority(),
-                assignment.getTask().getTaskCompleted(),
-                assignment.getUser().getUserFirstName()
-        );
-
-        return response;
+        return service.assignTask(assignmentRequest.getTaskId(), assignmentRequest.getUserId());
     }
+
 }
