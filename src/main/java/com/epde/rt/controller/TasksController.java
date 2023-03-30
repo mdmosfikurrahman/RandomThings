@@ -14,51 +14,51 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TasksController {
-    private final TasksServiceImpl tasksService;
+    private final TasksServiceImpl service;
 
-    public TasksController(TasksServiceImpl tasksService) {
-        this.tasksService = tasksService;
+    public TasksController(TasksServiceImpl service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Tasks> getAllTasks() {
-        return tasksService.getAllTasks();
+        return service.getAllTasks();
     }
 
     @GetMapping("/id-{taskId}")
     public Tasks getTaskById(@PathVariable Long taskId) {
-        return tasksService.getTaskById(taskId);
+        return service.getTaskById(taskId);
     }
 
     @GetMapping("/title-{taskTitle}")
     public Tasks getTaskByTitle(@PathVariable String taskTitle) {
-        return tasksService.getTaskByTaskTitle(taskTitle);
+        return service.getTaskByTaskTitle(taskTitle);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tasks createTask(@Valid @RequestBody Map<String, Object> json) {
+    public Tasks createTask(@Valid @RequestBody Map<String, Object> taskInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
-        TaskDto taskDto = objectMapper.convertValue(json, TaskDto.class);
-        Tasks tasks = tasksService.addMethod(taskDto);
-        return tasksService.createTask(tasks);
+        TaskDto taskDto = objectMapper.convertValue(taskInfo, TaskDto.class);
+        Tasks tasks = service.addMethod(taskDto);
+        return service.createTask(tasks);
     }
 
     @PutMapping("/id-{taskId}")
-    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody Map<String, Object> json) {
+    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody Map<String, Object> taskInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
-        TaskDto taskDto = objectMapper.convertValue(json, TaskDto.class);
-        Tasks tasks = tasksService.updateMethod(taskId, taskDto);
-        return tasksService.updateTask(taskId, tasks);
+        TaskDto taskDto = objectMapper.convertValue(taskInfo, TaskDto.class);
+        Tasks tasks = service.updateMethod(taskId, taskDto);
+        return service.updateTask(taskId, tasks);
     }
 
     @DeleteMapping("/id-{taskId}")
     public List<Tasks> deleteTaskById(@PathVariable Long taskId) {
-        return tasksService.deleteTaskById(taskId);
+        return service.deleteTaskById(taskId);
     }
 
     @DeleteMapping
     public void deleteAllTasks() {
-        tasksService.deleteAllTasks();
+        service.deleteAllTasks();
     }
 }
