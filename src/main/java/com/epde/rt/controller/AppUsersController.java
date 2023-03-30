@@ -14,25 +14,25 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/users")
 public class AppUsersController {
-    private final AppUsersServiceImpl appUsersService;
+    private final AppUsersServiceImpl service;
 
-    public AppUsersController(AppUsersServiceImpl appUsersService) {
-        this.appUsersService = appUsersService;
+    public AppUsersController(AppUsersServiceImpl service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<AppUsers> getAllUsers() {
-        return appUsersService.getAllUsers();
+        return service.getAllUsers();
     }
 
     @GetMapping("/id-{userId}")
     public AppUsers getUserById(@PathVariable Long userId) {
-        return appUsersService.getUserById(userId);
+        return service.getUserById(userId);
     }
 
     @GetMapping("/{username}")
     public AppUsers getUserByUsername(@PathVariable String username) {
-        return appUsersService.getUserByUsername(username);
+        return service.getUserByUsername(username);
     }
 
     @PostMapping
@@ -40,25 +40,25 @@ public class AppUsersController {
     public AppUsers createUser(@RequestBody Map<String, Object> userData) {
         ObjectMapper objectMapper = new ObjectMapper();
         AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
-        AppUsers appUsers = appUsersService.addMethod(appUserDto);
-        return appUsersService.createUser(appUsers);
+        AppUsers appUsers = service.addMethod(appUserDto);
+        return service.createUser(appUsers);
     }
 
     @PutMapping("/id-{userId}")
     public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody Map<String, Object> userData) {
         ObjectMapper objectMapper = new ObjectMapper();
         AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
-        AppUsers appUsers = appUsersService.updateMethod(userId, appUserDto);
-        return appUsersService.updateUser(userId, appUsers);
+        AppUsers appUsers = service.updateMethod(userId, appUserDto);
+        return service.updateUser(userId, appUsers);
     }
 
     @DeleteMapping("/id-{userId}")
     public List<AppUsers> deleteUserById(@PathVariable Long userId) {
-        return appUsersService.deleteUserById(userId);
+        return service.deleteUserById(userId);
     }
 
     @DeleteMapping
     public void deleteAllUsers() {
-        appUsersService.deleteAllAppUsers();
+        service.deleteAllAppUsers();
     }
 }
