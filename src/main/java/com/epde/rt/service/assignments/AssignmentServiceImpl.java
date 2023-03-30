@@ -11,6 +11,7 @@ import com.epde.rt.repository.AssignmentRepository;
 import com.epde.rt.repository.TasksRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,27 @@ public class AssignmentServiceImpl implements AssignmentService {
         this.assignmentRepository = assignmentRepository;
         this.tasksRepository = tasksRepository;
         this.usersRepository = usersRepository;
+    }
+
+    @Override
+    public List<Assignment> getAllAssignments() {
+        List<Assignment> assignmentList;
+        if (assignmentRepository.count() != 0) {
+            assignmentList = assignmentRepository.findAll();
+        } else {
+            throw new ResourceNotFoundException("No Assignments Found!");
+        }
+
+        return assignmentList;
+    }
+
+    @Override
+    public AssignmentResponse getAssignmentById(Long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("Assignment not found with ID: " + assignmentId);
+        });
+
+        return createAssignmentResponse(assignment);
     }
 
     @Override
@@ -48,8 +70,30 @@ public class AssignmentServiceImpl implements AssignmentService {
 
             return createAssignmentResponse(assignment);
         } else {
-            throw new ResourceNotFoundException("Task with ID: " + taskId + "or User with ID " + userId + "NOT FOUND!");
+            if (optionalTask.isPresent()) {
+                throw new ResourceNotFoundException("User not found with ID: " + userId);
+            } else if (optionalUser.isPresent()) {
+                throw new ResourceNotFoundException("Task not found with ID: " + taskId);
+            }
+
+            throw new ResourceNotFoundException("Task with ID: " + taskId + " and User with ID " + userId + " NOT FOUND!");
         }
+    }
+
+    @Override
+    public List<Assignment> deleteAssignmentById(Long assignmentId) {
+        if (assignmentRepository.findById(assignmentId).isEmpty()) {
+            throw new ResourceNotFoundException("Assignment not found with ID: " + assignmentId);
+        } else {
+            assignmentRepository.deleteById(assignmentId);
+        }
+
+        return assignmentRepository.findAll();
+    }
+
+    @Override
+    public void deleteAllAssignments() {
+        assignmentRepository.deleteAll();
     }
 
     private AssignmentResponse createAssignmentResponse(Assignment assignment) {
