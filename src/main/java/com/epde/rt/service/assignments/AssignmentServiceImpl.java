@@ -1,5 +1,6 @@
 package com.epde.rt.service.assignments;
 
+import com.epde.rt.exception.ResourceAlreadyExistsException;
 import com.epde.rt.exception.ResourceNotFoundException;
 import com.epde.rt.model.assignments.Assignment;
 import com.epde.rt.model.assignments.AssignmentResponse;
@@ -36,6 +37,12 @@ public class AssignmentServiceImpl implements AssignmentService {
             Tasks task = optionalTask.get();
             AppUsers user = optionalUser.get();
 
+            // Check if assignment already exists
+            Optional<Assignment> existingAssignment = assignmentRepository.findByTaskAndUser(task, user);
+            if (existingAssignment.isPresent()) {
+                throw new ResourceAlreadyExistsException("Task with ID: " + taskId + " is already assigned to User with ID: " + userId);
+            }
+
             Assignment assignment = new Assignment(task, user);
             assignmentRepository.save(assignment);
 
@@ -46,11 +53,6 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     private AssignmentResponse createAssignmentResponse(Assignment assignment) {
-        return new AssignmentResponse(
-                assignment.getTask().getTaskTitle(),
-                assignment.getTask().getTaskPriority(),
-                assignment.getTask().getTaskCompleted(),
-                assignment.getUser().getUserFirstName()
-        );
+        return new AssignmentResponse(assignment.getAssignmentId(), assignment.getTask().getTaskTitle(), assignment.getTask().getTaskPriority(), assignment.getTask().getTaskCompleted(), assignment.getUser().getUserFirstName());
     }
 }

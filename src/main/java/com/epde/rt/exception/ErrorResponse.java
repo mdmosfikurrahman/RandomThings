@@ -1,6 +1,7 @@
 package com.epde.rt.exception;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor

@@ -13,7 +13,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/assignments")
 public class AssignmentController {
-
     private final AssignmentService service;
 
     public AssignmentController(AssignmentService service) {
