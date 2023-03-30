@@ -2,6 +2,7 @@ package com.epde.rt.service.assignments;
 
 import com.epde.rt.exception.ResourceNotFoundException;
 import com.epde.rt.model.assignments.Assignment;
+import com.epde.rt.model.assignments.AssignmentResponse;
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.model.users.AppUsers;
 import com.epde.rt.repository.AppUsersRepository;
@@ -27,7 +28,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Assignment assignTask(Long taskId, Long userId) {
+    public AssignmentResponse assignTask(Long taskId, Long userId) {
         Optional<Tasks> optionalTask = tasksRepository.findById(taskId);
         Optional<AppUsers> optionalUser = usersRepository.findById(userId);
 
@@ -36,10 +37,20 @@ public class AssignmentServiceImpl implements AssignmentService {
             AppUsers user = optionalUser.get();
 
             Assignment assignment = new Assignment(task, user);
+            assignmentRepository.save(assignment);
 
-            return assignmentRepository.save(assignment);
+            return createAssignmentResponse(assignment);
         } else {
             throw new ResourceNotFoundException("Task with ID: " + taskId + "or User with ID " + userId + "NOT FOUND!");
         }
+    }
+
+    private AssignmentResponse createAssignmentResponse(Assignment assignment) {
+        return new AssignmentResponse(
+                assignment.getTask().getTaskTitle(),
+                assignment.getTask().getTaskPriority(),
+                assignment.getTask().getTaskCompleted(),
+                assignment.getUser().getUserFirstName()
+        );
     }
 }
