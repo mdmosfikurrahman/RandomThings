@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +16,6 @@ public class TaskDto {
     @NotBlank(message = "Title is Mandatory!")
     private String taskTitle;
     @NotBlank(message = "Details is Mandatory!")
-    @Size(max = 1000, message = "Details must not exceed 1000 characters!")
     private String taskDetails;
     @NotBlank(message = "Priority is Mandatory!")
     private String taskPriority;
