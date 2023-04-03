@@ -43,9 +43,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public AssignmentResponse getAssignmentById(Long assignmentId) {
-        Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Assignment not found with ID: " + assignmentId);
-        });
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Assignment not found with ID: " + assignmentId));
 
         return createAssignmentResponse(assignment);
     }
