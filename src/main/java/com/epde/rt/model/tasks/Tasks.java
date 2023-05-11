@@ -4,7 +4,7 @@ import com.epde.rt.model.tasks.enums.TaskPriority;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Data
