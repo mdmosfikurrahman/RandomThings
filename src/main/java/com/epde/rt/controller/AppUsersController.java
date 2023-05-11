@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ public class AppUsersController {
     }
 
     @PutMapping("/id-{userId}")
-    public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody Map<String, Object> userData) {
+    public AppUsers updateUser(@PathVariable Long userId, @RequestBody Map<String, Object> userData) {
         ObjectMapper objectMapper = new ObjectMapper();
         AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
         AppUsers appUsers = service.updateMethod(userId, appUserDto);

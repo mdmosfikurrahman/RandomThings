@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class TasksController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tasks createTask(@Valid @RequestBody Map<String, Object> taskInfo) {
+    public Tasks createTask(@RequestBody Map<String, Object> taskInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
         TaskDto taskDto = objectMapper.convertValue(taskInfo, TaskDto.class);
         Tasks tasks = service.addMethod(taskDto);
@@ -45,7 +44,7 @@ public class TasksController {
     }
 
     @PutMapping("/id-{taskId}")
-    public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody Map<String, Object> taskInfo) {
+    public Tasks updateTask(@PathVariable Long taskId, @RequestBody Map<String, Object> taskInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
         TaskDto taskDto = objectMapper.convertValue(taskInfo, TaskDto.class);
         Tasks tasks = service.updateMethod(taskId, taskDto);
