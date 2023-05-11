@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class AssignmentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AssignmentResponse assignTask(@Valid @RequestBody Map<String, Object> assignmentInfo) {
+    public AssignmentResponse assignTask(@RequestBody Map<String, Object> assignmentInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
         AssignmentRequest assignmentRequest = objectMapper.convertValue(assignmentInfo, AssignmentRequest.class);
         return service.assignTask(assignmentRequest.getTaskId(), assignmentRequest.getUserId());
