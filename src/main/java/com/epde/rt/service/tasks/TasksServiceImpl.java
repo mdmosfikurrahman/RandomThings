@@ -107,6 +107,10 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public void deleteAllTasks() {
-        repository.deleteAll();
+        if (repository.count() != 0) {
+            repository.deleteAll();
+        } else {
+            throw new ResourceNotFoundException("No Tasks Found!");
+        }
     }
 }
