@@ -3,38 +3,31 @@ package com.epde.rt.dto;
 import com.epde.rt.exception.InvalidEnumValueException;
 import com.epde.rt.model.users.enums.AppUserGender;
 import com.epde.rt.model.users.enums.AppUserRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AppUserDto {
     private Long userId;
-    @NotBlank(message = "First Name is Mandatory!")
+
     private String userFirstName;
-    @NotBlank(message = "Last Name is Mandatory!")
+
     private String userLastName;
-    @NotBlank(message = "Email Address is Mandatory!")
+
     private String userEmail;
-    @NotBlank(message = "Gender is Mandatory!")
+
     private String userGender;
-    @NotBlank(message = "Address is Mandatory!")
+
     private String userAddress;
-    @NotBlank(message = "Contact Number is Mandatory!")
+
     private String userContactNumber;
-    @NotBlank(message = "User Name is Mandatory!")
+
     private String username;
-    @NotBlank(message = "Password is Mandatory!")
+
     private String password;
-    @NotBlank(message = "Role is Mandatory!")
+
     private String userRole;
-    @NotBlank(message = "Date of Birth is Mandatory!")
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date userDateOfBirth;
 
@@ -52,5 +45,110 @@ public class AppUserDto {
         } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("Invalid Role: " + userRole);
         }
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserFirstName() {
+        return userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public String getUserContactNumber() {
+        return userContactNumber;
+    }
+
+    public void setUserContactNumber(String userContactNumber) {
+        this.userContactNumber = userContactNumber;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public Date getUserDateOfBirth() {
+        return userDateOfBirth;
+    }
+
+    public void setUserDateOfBirth(Date userDateOfBirth) {
+        this.userDateOfBirth = userDateOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUserDto{" +
+                "userId=" + userId +
+                ", userFirstName='" + userFirstName + '\'' +
+                ", userLastName='" + userLastName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userGender='" + userGender + '\'' +
+                ", userAddress='" + userAddress + '\'' +
+                ", userContactNumber='" + userContactNumber + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", userRole='" + userRole + '\'' +
+                ", userDateOfBirth=" + userDateOfBirth +
+                '}';
     }
 }

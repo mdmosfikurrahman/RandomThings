@@ -92,7 +92,11 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public void deleteAllAssignments() {
-        assignmentRepository.deleteAll();
+        if (assignmentRepository.count() != 0) {
+            assignmentRepository.deleteAll();
+        } else {
+            throw new ResourceNotFoundException("No Assignments Found!");
+        }
     }
 
     private AssignmentResponse createAssignmentResponse(Assignment assignment) {

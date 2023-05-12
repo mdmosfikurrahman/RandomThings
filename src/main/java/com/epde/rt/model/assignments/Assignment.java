@@ -2,16 +2,10 @@ package com.epde.rt.model.assignments;
 
 import com.epde.rt.model.tasks.Tasks;
 import com.epde.rt.model.users.AppUsers;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +21,34 @@ public class Assignment {
 
     public Assignment(Tasks task, AppUsers user) {
         this.task = task;
+        this.user = user;
+    }
+
+    public Assignment() {
+
+    }
+
+    public Long getAssignmentId() {
+        return assignmentId;
+    }
+
+    public void setAssignmentId(Long assignmentId) {
+        this.assignmentId = assignmentId;
+    }
+
+    public Tasks getTask() {
+        return task;
+    }
+
+    public void setTask(Tasks task) {
+        this.task = task;
+    }
+
+    public AppUsers getUser() {
+        return user;
+    }
+
+    public void setUser(AppUsers user) {
         this.user = user;
     }
 }

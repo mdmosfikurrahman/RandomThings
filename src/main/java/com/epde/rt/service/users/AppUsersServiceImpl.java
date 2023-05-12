@@ -155,6 +155,10 @@ public class AppUsersServiceImpl implements AppUsersService {
      */
     @Override
     public void deleteAllAppUsers() {
-        repository.deleteAll();
+        if (repository.count() != 0) {
+            repository.deleteAll();
+        } else {
+            throw new ResourceNotFoundException("No Users Found!");
+        }
     }
 }
