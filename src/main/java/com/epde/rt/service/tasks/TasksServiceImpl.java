@@ -36,16 +36,12 @@ public class TasksServiceImpl implements TasksService {
 
     @Override
     public Tasks getTaskById(Long taskId) {
-        return repository.findById(taskId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Task not found with ID: " + taskId);
-        });
+        return repository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + taskId));
     }
 
     @Override
     public Tasks getTaskByTaskTitle(String taskTitle) {
-        return repository.findByTaskTitle(taskTitle).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Task not found with Title: " + taskTitle);
-        });
+        return repository.findByTaskTitle(taskTitle).orElseThrow(() -> new ResourceNotFoundException("Task not found with Title: " + taskTitle));
     }
 
     @Override
@@ -88,10 +84,7 @@ public class TasksServiceImpl implements TasksService {
         taskDto.validateTaskPriority();
         TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
 
-        Tasks tasksToUpdate = repository.findById(taskId)
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Task not found with ID: " + taskId);
-                });
+        Tasks tasksToUpdate = repository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + taskId));
 
         tasksToUpdate.setTaskTitle(taskDto.getTaskTitle());
         tasksToUpdate.setTaskDetails(taskDto.getTaskDetails());

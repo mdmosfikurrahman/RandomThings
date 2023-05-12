@@ -42,9 +42,7 @@ public class AppUsersServiceImpl implements AppUsersService {
      */
     @Override
     public AppUsers getUserById(Long userId) {
-        return repository.findById(userId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("User not found with ID: " + userId);
-        });
+        return repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
     }
 
     /**
@@ -54,9 +52,7 @@ public class AppUsersServiceImpl implements AppUsersService {
      */
     @Override
     public AppUsers getUserByUsername(String username) {
-        return repository.findByUsername(username).orElseThrow(() -> {
-            throw new ResourceNotFoundException("User not found with username: " + username);
-        });
+        return repository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
     }
 
     /**
@@ -124,9 +120,7 @@ public class AppUsersServiceImpl implements AppUsersService {
         appUserDto.validateUserRole();
         AppUserRole appUserRole = AppUserRole.valueOf(appUserDto.getUserRole());
 
-        AppUsers userToUpdate = repository.findById(userId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("User not found with ID: " + userId);
-        });
+        AppUsers userToUpdate = repository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
         userToUpdate.setUserFirstName(appUserDto.getUserFirstName());
         userToUpdate.setUserLastName(appUserDto.getUserLastName());

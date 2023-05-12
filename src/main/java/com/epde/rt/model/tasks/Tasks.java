@@ -1,10 +1,9 @@
 package com.epde.rt.model.tasks;
 
 import com.epde.rt.model.tasks.enums.TaskPriority;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Entity
 @Data

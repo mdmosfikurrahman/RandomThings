@@ -2,11 +2,9 @@ package com.epde.rt.service.tasks;
 
 import com.epde.rt.dto.TaskDto;
 import com.epde.rt.model.tasks.Tasks;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface TasksService {
     List<Tasks> getAllTasks();
 

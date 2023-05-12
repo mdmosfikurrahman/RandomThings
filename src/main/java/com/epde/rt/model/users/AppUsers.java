@@ -9,16 +9,13 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
 @Data
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class AppUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
