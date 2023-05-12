@@ -48,8 +48,7 @@ public class TasksController {
     public Tasks updateTask(@PathVariable Long taskId, @Valid @RequestBody Map<String, Object> taskInfo) {
         ObjectMapper objectMapper = new ObjectMapper();
         TaskDto taskDto = objectMapper.convertValue(taskInfo, TaskDto.class);
-        Tasks tasks = service.updateMethod(taskId, taskDto);
-        return service.updateTask(taskId, tasks);
+        return service.updateMethod(taskId, taskDto);
     }
 
     @DeleteMapping("/id-{taskId}")

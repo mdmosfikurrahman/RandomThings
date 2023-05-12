@@ -88,16 +88,17 @@ public class TasksServiceImpl implements TasksService {
         taskDto.validateTaskPriority();
         TaskPriority taskPriority = TaskPriority.valueOf(taskDto.getTaskPriority());
 
-        Tasks tasksToUpdate = repository.findById(taskId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Task not found with ID: " + taskId);
-        });
+        Tasks tasksToUpdate = repository.findById(taskId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Task not found with ID: " + taskId);
+                });
 
         tasksToUpdate.setTaskTitle(taskDto.getTaskTitle());
         tasksToUpdate.setTaskDetails(taskDto.getTaskDetails());
         tasksToUpdate.setTaskPriority(taskPriority);
         tasksToUpdate.setTaskCompleted(taskDto.getTaskCompleted());
 
-        return repository.save(tasksToUpdate);
+        return updateTask(taskId, tasksToUpdate);
     }
 
     @Override

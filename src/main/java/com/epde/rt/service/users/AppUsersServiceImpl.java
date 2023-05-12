@@ -139,7 +139,7 @@ public class AppUsersServiceImpl implements AppUsersService {
         userToUpdate.setUserRole(appUserRole);
         userToUpdate.setUserDateOfBirth(appUserDto.getUserDateOfBirth());
 
-        return repository.save(userToUpdate);
+        return updateUser(userId, userToUpdate);
     }
 
     /**

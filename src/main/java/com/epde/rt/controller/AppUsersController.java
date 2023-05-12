@@ -48,8 +48,7 @@ public class AppUsersController {
     public AppUsers updateUser(@PathVariable Long userId, @Valid @RequestBody Map<String, Object> userData) {
         ObjectMapper objectMapper = new ObjectMapper();
         AppUserDto appUserDto = objectMapper.convertValue(userData, AppUserDto.class);
-        AppUsers appUsers = service.updateMethod(userId, appUserDto);
-        return service.updateUser(userId, appUsers);
+        return service.updateMethod(userId, appUserDto);
     }
 
     @DeleteMapping("/id-{userId}")
