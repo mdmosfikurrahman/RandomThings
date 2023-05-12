@@ -2,7 +2,6 @@ package com.epde.rt.service.users;
 
 import com.epde.rt.dto.AppUserDto;
 import com.epde.rt.model.users.AppUsers;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
